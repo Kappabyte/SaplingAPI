@@ -8,10 +8,9 @@ import java.util.UUID;
 
 public abstract class SaplingAPI {
 
-    public static void initalize(SaplingAPI instance) {
+    public static void initialize(SaplingAPI instance) {
+        System.out.println("Initialized Sapling API!");
         SaplingAPI.instance = instance;
-
-
     }
 
     private static SaplingAPI instance;

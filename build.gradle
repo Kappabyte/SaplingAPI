@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'fabric-loom' version '0.9-SNAPSHOT'
 }
 
 group 'org.example'
@@ -9,10 +10,22 @@ repositories {
     mavenCentral()
     maven { url 'https://repo.spongepowered.org/maven' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.fabricmc.net' }
+    maven { url 'https://maven.nucleoid.xyz' }
 }
 
 dependencies {
-    implementation 'com.github.Minestom:Minestom:-SNAPSHOT'
+    //Minestom
+    compileOnly 'com.github.Minestom:Minestom:-SNAPSHOT'
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    implementation 'com.zaxxer:HikariCP:3.4.5'
+
+    //Fabric
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation include("eu.pb4:sgui:1.0.0-rc4+1.17.1")
+    modImplementation include("net.kyori:adventure-platform-fabric:4.0.0-SNAPSHOT")
+    compileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 test {

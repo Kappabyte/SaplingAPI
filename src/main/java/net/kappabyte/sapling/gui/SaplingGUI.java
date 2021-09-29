@@ -1,6 +1,7 @@
 package net.kappabyte.sapling.gui;
 
 
+import net.kappabyte.sapling.SaplingAPI;
 import net.kyori.adventure.text.Component;
 
 import java.util.HashMap;
@@ -15,10 +16,13 @@ public class SaplingGUI {
     Component title;
     InventoryType type;
 
+    GUIManager.GUILookAndFeel laf = new GUIManager.GUILookAndFeel();
+
     HashMap<Integer, GUIComponent> components = new HashMap<Integer, GUIComponent>();
 
     public SaplingGUI(Component title, InventoryType type) {
         this.title = title;
+        this.type = type;
     }
 
     public Component getTitle() {
@@ -35,6 +39,12 @@ public class SaplingGUI {
 
     public HashMap<Integer, GUIComponent> getComponents() {
         return this.components;
+    }
+
+    public GUIManager.GUILookAndFeel getLookAndFeel() {
+        if(laf != null) return laf;
+
+        return SaplingAPI.getInstance().getGUIManager().defaultLookAndFeel;
     }
 
     public enum InventoryType {

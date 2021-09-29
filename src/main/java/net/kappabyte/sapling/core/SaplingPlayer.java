@@ -14,6 +14,9 @@ public interface SaplingPlayer {
         return SaplingAPI.getInstance().getPlayerFromUniqueID(uuid);
     }
 
+    String getName();
     UUID getUniqueID();
+    Object getNativePlayer();
     void openInventory(Object inventory);
+    void closeInventory();
 }
