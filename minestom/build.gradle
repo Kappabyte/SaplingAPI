@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'net.kappabyte.sapling.minestom'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    //Minestom
+    compileOnly 'com.github.Minestom:Minestom:-SNAPSHOT'
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    implementation 'com.zaxxer:HikariCP:3.4.5'
+
+    implementation project(":common")
+}
+
+test {
+    useJUnitPlatform()
+}
