@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 group 'net.kappayte.sapling'
@@ -19,7 +20,7 @@ allprojects {
 }
 
 dependencies {
-    implementation "net.kyori:adventure-api:4.9.1"
+    compileOnly "net.kyori:adventure-api:4.9.1"
 }
 
 test {

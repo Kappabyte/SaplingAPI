@@ -1,0 +1,3 @@
+rootProject.name = 'SaplingAPI'
+include 'common'
+include 'minestom'

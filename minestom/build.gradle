@@ -1,9 +1,12 @@
 plugins {
     id 'java-library'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 group 'net.kappabyte.sapling.minestom'
 version '1.0-SNAPSHOT'
+
+tasks.build.dependsOn tasks.shadowJar
 
 repositories {
     mavenCentral()
@@ -11,17 +14,13 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-allprojects {
-    dependencies {
-        api project(":SaplingAPI:common")
-    }
-}
-
 dependencies {
     //Minestom
     compileOnly 'com.github.Minestom:Minestom:-SNAPSHOT'
+
+    implementation project(":common")
 }
 
-test {
-    useJUnitPlatform()
+shadowJar {
+    mergeServiceFiles()
 }
