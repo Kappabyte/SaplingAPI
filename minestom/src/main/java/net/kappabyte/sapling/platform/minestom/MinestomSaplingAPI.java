@@ -8,6 +8,7 @@ import net.kappabyte.sapling.platform.minestom.core.MinestomSaplingPlayer;
 import net.kappabyte.sapling.platform.minestom.gui.MinestomGUIManager;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.inventory.Inventory;
 
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ public class MinestomSaplingAPI extends SaplingAPI {
 
     @Override
     public SaplingPlayer getPlayerFromNativePlayer(Object nativePlayer) {
+        if(!(nativePlayer instanceof Player)) throw new IllegalArgumentException("The provided argument must be a native Minestom Player type");
         return new MinestomSaplingPlayer((Player) nativePlayer);
     }
 }

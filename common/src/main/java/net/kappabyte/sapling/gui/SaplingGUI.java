@@ -48,11 +48,25 @@ public class SaplingGUI {
     }
 
     public enum InventoryType {
-        CHEST_1_ROW,
-        CHEST_2_ROW,
-        CHEST_3_ROW,
-        CHEST_4_ROW,
-        CHEST_5_ROW,
-        CHEST_6_ROW
+        CHEST_1_ROW(1),
+        CHEST_2_ROW(2),
+        CHEST_3_ROW(3),
+        CHEST_4_ROW(4),
+        CHEST_5_ROW(5),
+        CHEST_6_ROW(6);
+
+        private int rows;
+
+        InventoryType(int rows) {
+            this.rows = rows;
+        }
+
+        public int getRows() {
+            return rows;
+        }
+
+        public int getSize() {
+            return 9 * rows;
+        }
     }
 }

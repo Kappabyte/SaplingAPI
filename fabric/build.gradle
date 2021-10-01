@@ -1,31 +1,56 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'fabric-loom' version '0.9-SNAPSHOT'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
+
+version = project.mod_version
+group = project.maven_group
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spongepowered.org/maven' }
-    maven { url 'https://jitpack.io' }
+    maven {
+        name = "sonatype-oss-snapshots"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+allprojects {
+    dependencies {
+
+    }
 }
 
 dependencies {
-    //Minestom
-    compileOnly 'com.github.Minestom:Minestom:-SNAPSHOT'
-    implementation 'mysql:mysql-connector-java:8.0.26'
-    implementation 'com.zaxxer:HikariCP:3.4.5'
-
-    //Fabric
+    // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation include("eu.pb4:sgui:1.0.0-rc4+1.17.1")
-    modImplementation include("net.kyori:adventure-platform-fabric:4.0.0-SNAPSHOT")
-    compileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    compileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    compileOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    compileOnly("net.kyori:adventure-platform-fabric:4.1.0-SNAPSHOT")
+
+    api project(":SaplingAPI:common")
 }
 
-test {
-    useJUnitPlatform()
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    it.options.encoding = "UTF-8"
+
+    // Minecraft 1.17 (21w19a) upwards uses Java 16.
+    it.options.release = 16
 }

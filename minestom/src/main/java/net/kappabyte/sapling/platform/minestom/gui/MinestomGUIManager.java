@@ -26,6 +26,7 @@ public class MinestomGUIManager extends GUIManager {
 
     private static Inventory renderGUI(GUIManager manager, SaplingGUI gui, SaplingPlayer player) {
         Inventory inventory = new Inventory(getNativeInventoryType(gui), gui.getTitle());
+
         for(int slot : gui.getComponents().keySet()) {
             inventory.setItemStack(slot, renderComponent(gui, gui.getComponents().get(slot), player));
         }

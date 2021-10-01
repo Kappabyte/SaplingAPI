@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group 'net.kappabyte.sapling.minestom'
@@ -11,13 +11,15 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+allprojects {
+    dependencies {
+        api project(":SaplingAPI:common")
+    }
+}
+
 dependencies {
     //Minestom
     compileOnly 'com.github.Minestom:Minestom:-SNAPSHOT'
-    implementation 'mysql:mysql-connector-java:8.0.26'
-    implementation 'com.zaxxer:HikariCP:3.4.5'
-
-    implementation project(":common")
 }
 
 test {

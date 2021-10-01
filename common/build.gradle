@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group 'net.kappayte.sapling'
@@ -9,6 +9,13 @@ repositories {
     mavenCentral()
     maven { url 'https://repo.spongepowered.org/maven' }
     maven { url 'https://jitpack.io' }
+}
+
+allprojects {
+    dependencies {
+        implementation 'mysql:mysql-connector-java:8.0.26'
+        implementation 'com.zaxxer:HikariCP:3.4.5'
+    }
 }
 
 dependencies {
