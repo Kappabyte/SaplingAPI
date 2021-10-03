@@ -128,6 +128,15 @@ public abstract class GUIComponent {
             return this.hideFlags;
         }
 
+        public List<HideFlags> hiddenFlags() {
+            List<HideFlags> flags = new ArrayList<>();
+            for(HideFlags flag : HideFlags.values()) {
+                if(flag(flag)) flags.add(flag);
+            }
+
+            return flags;
+        }
+
         public boolean flag(HideFlags flag) {
             return ((this.hideFlags >> flag.getBit()) & 1) == 1;
         }
@@ -159,23 +168,14 @@ public abstract class GUIComponent {
     public enum ClickType {
         LEFT_CLICK,
         RIGHT_CLICK,
-        CHANGE_HELD,
+        MIDDLE_CLICK,
 
-        START_SHIFT_CLICK,
         SHIFT_CLICK,
-
-        START_LEFT_DRAGGING,
-        START_RIGHT_DRAGGING,
 
         LEFT_DRAGGING,
         RIGHT_DRAGGING,
 
-        END_LEFT_DRAGGING,
-        END_RIGHT_DRAGGING,
-
-        START_DOUBLE_CLICK,
         DOUBLE_CLICK,
-
         DROP
     }
 }

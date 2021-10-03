@@ -2,16 +2,15 @@ package net.kappabyte.sapling.platform.fabric.core;
 
 import net.kappabyte.sapling.core.SaplingPlayer;
 import net.kappabyte.sapling.platform.fabric.gui.GUIHandlerFactory;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
 
 public class FabricSaplingPlayer implements SaplingPlayer {
 
-    PlayerEntity player = null;
+    ServerPlayerEntity player = null;
 
-    public FabricSaplingPlayer(PlayerEntity player) {
+    public FabricSaplingPlayer(ServerPlayerEntity player) {
         this.player = player;
     }
 
@@ -38,6 +37,6 @@ public class FabricSaplingPlayer implements SaplingPlayer {
 
     @Override
     public void closeInventory() {
-        ((ServerPlayerEntity)player).closeHandledScreen();
+        player.closeHandledScreen();
     }
 }

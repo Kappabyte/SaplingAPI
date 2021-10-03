@@ -27,17 +27,15 @@ public class FabricSaplingAPI extends SaplingAPI {
 
     GUIManager guiManager = new FabricGUIManager();
 
-    MinecraftServer server;
+    public MinecraftServer server;
 
-    public FabricSaplingAPI(ModInitializer mod) {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    public FabricSaplingAPI() {
         ServerLifecycleEvents.SERVER_STARTING.register(this::onStart);
 
     }
 
     private void onStart(MinecraftServer server) {
         this.server = server;
-        System.out.println(">>>>>>>>>>>> Server Starting!");
         return;
     }
 
@@ -66,6 +64,6 @@ public class FabricSaplingAPI extends SaplingAPI {
 
     @Override
     public SaplingPlayer getPlayerFromNativePlayer(Object nativePlayer) {
-        return getPlayerFromUniqueID((UUID) nativePlayer);
+        return getPlayerFromUniqueID(((ServerPlayerEntity)nativePlayer).getUuid());
     }
 }

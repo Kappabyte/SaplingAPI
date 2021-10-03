@@ -5,8 +5,10 @@ import net.kappabyte.sapling.gui.GUIComponent;
 import net.kappabyte.sapling.gui.GUIManager;
 import net.kappabyte.sapling.gui.SaplingGUI;
 import net.kyori.adventure.text.Component;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.entity.PlayerSkin;
+import net.minestom.server.event.inventory.InventoryCloseEvent;
 import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.inventory.click.ClickType;
@@ -15,24 +17,56 @@ import net.minestom.server.item.*;
 import net.minestom.server.item.attribute.ItemAttribute;
 import net.minestom.server.item.metadata.PlayerHeadMeta;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class MinestomGUIManager extends GUIManager {
 
-    @Override
-    public void ShowToPlayer(SaplingPlayer player, SaplingGUI gui) {
-        player.openInventory(renderGUI(this, gui, player));
+    HashMap<Player, Inventory> currentPlayerInventories = new HashMap<>();
+
+    public MinestomGUIManager() {
+        super();
+        MinecraftServer.getGlobalEventHandler().addListener(InventoryCloseEvent.class, (event) -> {
+            if(event.getInventory() instanceof GUI) {
+                handleClose(SaplingPlayer.getPlayerFromNativePlayer(event.getPlayer()), ((GUI)event.getInventory()).gui);
+            }
+        });
     }
 
-    private static Inventory renderGUI(GUIManager manager, SaplingGUI gui, SaplingPlayer player) {
-        Inventory inventory = new Inventory(getNativeInventoryType(gui), gui.getTitle());
+    @Override
+    public void ShowToPlayer(SaplingPlayer player, SaplingGUI gui) {
+        currentPlayerInventories.remove(player);
+        player.openInventory(renderGUI(gui, player));
+    }
+
+    @Override
+    public void ReRender(SaplingPlayer player, SaplingGUI gui) {
+        Inventory inventory = currentPlayerInventories.get(player);
+
+        if(inventory == null) {
+            ShowToPlayer(player, gui);
+            return;
+        }
+
+        for(int slot : gui.getComponents().keySet()) {
+            inventory.setItemStack(slot, renderComponent(gui, gui.getComponents().get(slot), player));
+        }
+    }
+
+    @Override
+    public void handleClose(SaplingPlayer player, SaplingGUI gui) {
+        currentPlayerInventories.remove(player);
+    }
+
+    private Inventory renderGUI(SaplingGUI gui, SaplingPlayer player) {
+        GUI inventory = new GUI(getNativeInventoryType(gui), gui.getTitle(), gui);
 
         for(int slot : gui.getComponents().keySet()) {
             inventory.setItemStack(slot, renderComponent(gui, gui.getComponents().get(slot), player));
         }
 
         inventory.addInventoryCondition((clicker, slot, clickType, result) -> {
-            handleInventoryClick(manager, slot, clicker.getUuid(), clickTypeFromNative(clickType), gui);
+            handleInventoryClick(slot, clicker.getUuid(), clickTypeFromNative(clickType), gui);
             result.setCancel(true);
         });
 
@@ -41,19 +75,12 @@ public class MinestomGUIManager extends GUIManager {
 
     private static GUIComponent.ClickType clickTypeFromNative(ClickType type) {
         return switch(type) {
-            case LEFT_CLICK -> GUIComponent.ClickType.LEFT_CLICK;
+            case LEFT_CLICK, CHANGE_HELD -> GUIComponent.ClickType.LEFT_CLICK;
             case RIGHT_CLICK -> GUIComponent.ClickType.RIGHT_CLICK;
-            case CHANGE_HELD -> GUIComponent.ClickType.CHANGE_HELD;
-            case START_SHIFT_CLICK -> GUIComponent.ClickType.START_SHIFT_CLICK;
-            case SHIFT_CLICK -> GUIComponent.ClickType.SHIFT_CLICK;
-            case START_LEFT_DRAGGING -> GUIComponent.ClickType.START_LEFT_DRAGGING;
-            case START_RIGHT_DRAGGING -> GUIComponent.ClickType.START_RIGHT_DRAGGING;
-            case LEFT_DRAGGING -> GUIComponent.ClickType.LEFT_DRAGGING;
-            case RIGHT_DRAGGING -> GUIComponent.ClickType.RIGHT_DRAGGING;
-            case END_LEFT_DRAGGING -> GUIComponent.ClickType.END_LEFT_DRAGGING;
-            case END_RIGHT_DRAGGING -> GUIComponent.ClickType.END_RIGHT_DRAGGING;
-            case START_DOUBLE_CLICK -> GUIComponent.ClickType.START_DOUBLE_CLICK;
-            case DOUBLE_CLICK -> GUIComponent.ClickType.DOUBLE_CLICK;
+            case START_SHIFT_CLICK, SHIFT_CLICK -> GUIComponent.ClickType.SHIFT_CLICK;
+            case START_LEFT_DRAGGING, LEFT_DRAGGING, END_LEFT_DRAGGING -> GUIComponent.ClickType.LEFT_DRAGGING;
+            case START_RIGHT_DRAGGING, END_RIGHT_DRAGGING, RIGHT_DRAGGING -> GUIComponent.ClickType.RIGHT_DRAGGING;
+            case START_DOUBLE_CLICK, DOUBLE_CLICK -> GUIComponent.ClickType.DOUBLE_CLICK;
             case DROP -> GUIComponent.ClickType.DROP;
         };
     }

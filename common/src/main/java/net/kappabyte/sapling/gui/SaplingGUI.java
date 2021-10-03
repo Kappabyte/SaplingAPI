@@ -2,6 +2,7 @@ package net.kappabyte.sapling.gui;
 
 
 import net.kappabyte.sapling.SaplingAPI;
+import net.kappabyte.sapling.core.SaplingPlayer;
 import net.kyori.adventure.text.Component;
 
 import java.util.HashMap;

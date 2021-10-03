@@ -1,7 +1,9 @@
 package net.kappabyte.sapling.platform.fabric.gui;
 
+import net.kappabyte.sapling.core.SaplingPlayer;
 import net.kappabyte.sapling.gui.SaplingGUI;
 import net.kappabyte.sapling.platform.fabric.FabricSaplingAPI;
+import net.kappabyte.sapling.platform.fabric.core.FabricSaplingPlayer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricAudiences;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
@@ -16,10 +18,11 @@ import org.jetbrains.annotations.Nullable;
 public class GUIHandlerFactory implements NamedScreenHandlerFactory {
 
     SaplingGUI gui;
-    GUI inventory;
+    FabricGUIManager manager;
 
-    public GUIHandlerFactory(SaplingGUI gui) {
+    public GUIHandlerFactory(SaplingGUI gui, FabricGUIManager manager) {
         this.gui = gui;
+        this.manager = manager;
     }
 
     @Override
@@ -30,6 +33,8 @@ public class GUIHandlerFactory implements NamedScreenHandlerFactory {
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new GUIHandler(gui, syncId, player);
+        GUIHandler handler = new GUIHandler(gui, syncId, SaplingPlayer.getPlayerFromNativePlayer(player));
+        manager.inventories.put(player.getUuid(), handler);
+        return handler;
     }
 }

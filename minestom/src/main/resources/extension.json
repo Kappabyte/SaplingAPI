@@ -1,5 +1,5 @@
 {
-  "entrypoint": "net.kappabyte.sappling.platform.minestom.MinestomSaplingExtension",
-  "name": "MinestomSapplingAPI",
+  "entrypoint": "net.kappabyte.sapling.platform.minestom.MinestomSaplingExtension",
+  "name": "MinestomSaplingAPI",
   "version": "1.0.0-a1"
 }

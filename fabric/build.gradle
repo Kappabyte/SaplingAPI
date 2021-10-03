@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'fabric-loom' version '0.9-SNAPSHOT'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -27,13 +28,19 @@ dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    compileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    compileOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    compileOnly("net.kyori:adventure-platform-fabric:4.1.0-SNAPSHOT")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modImplementation("net.kyori:adventure-platform-fabric:4.1.0-SNAPSHOT")
 
-    api project(":SaplingAPI:common")
+    shadow project(":common")
+}
+
+shadowJar {
+    classifier "dev-shadow"
+    configurations = [project.configurations.shadow]
+    exclude("META-INF")
 }
 
 processResources {
@@ -53,4 +60,11 @@ tasks.withType(JavaCompile).configureEach {
 
     // Minecraft 1.17 (21w19a) upwards uses Java 16.
     it.options.release = 16
+}
+
+remapJar {
+    dependsOn(shadowJar)
+    mustRunAfter(shadowJar)
+
+    input.set shadowJar.archiveFile.get()
 }

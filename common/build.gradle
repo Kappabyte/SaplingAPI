@@ -14,8 +14,8 @@ repositories {
 
 allprojects {
     dependencies {
-        implementation 'mysql:mysql-connector-java:8.0.26'
-        implementation 'com.zaxxer:HikariCP:3.4.5'
+        api 'mysql:mysql-connector-java:8.0.26'
+        api 'com.zaxxer:HikariCP:3.4.5'
     }
 }
 

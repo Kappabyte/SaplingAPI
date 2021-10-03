@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class GUI implements Inventory {
 
-    HashMap<Integer, ItemStack> items;
+    HashMap<Integer, ItemStack> items = new HashMap<>();
 
     SaplingGUI gui;
 
@@ -29,27 +29,30 @@ public class GUI implements Inventory {
 
     @Override
     public ItemStack getStack(int slot) {
-        return null;
+        return items.containsKey(slot) ? items.get(slot) : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        return null;
+        if(!items.containsKey(slot)) return ItemStack.EMPTY;
+        if(items.get(slot).getCount() <= amount) return items.remove(slot);
+        items.get(slot).setCount(items.get(slot).getCount() - amount);
+        return items.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return null;
+        return items.remove(slot);
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-
+        items.put(slot, stack);
     }
 
     @Override
     public void markDirty() {
-
+        //ignore
     }
 
     @Override
@@ -59,6 +62,6 @@ public class GUI implements Inventory {
 
     @Override
     public void clear() {
-
+        items.clear();
     }
 }

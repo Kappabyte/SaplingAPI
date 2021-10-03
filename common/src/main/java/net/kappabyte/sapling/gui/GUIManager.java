@@ -17,7 +17,11 @@ public abstract class GUIManager {
 
     public abstract void ShowToPlayer(SaplingPlayer player, SaplingGUI gui);
 
-    public static void handleInventoryClick(GUIManager manager, int slot, UUID playerUUID, GUIComponent.ClickType type, SaplingGUI gui) {
+    public abstract void ReRender(SaplingPlayer player, SaplingGUI gui);
+
+    public abstract void handleClose(SaplingPlayer player, SaplingGUI gui);
+
+    public void handleInventoryClick(int slot, UUID playerUUID, GUIComponent.ClickType type, SaplingGUI gui) {
         if(!gui.getComponents().containsKey(slot)) return;
 
         SaplingPlayer player = SaplingPlayer.getPlayerFromUniqueID(playerUUID);
@@ -26,7 +30,7 @@ public abstract class GUIManager {
         if(response == GUIComponent.ClickResponse.CLOSE) {
             player.closeInventory();
         } else if(response == GUIComponent.ClickResponse.RENDER) {
-            manager.ShowToPlayer(player, gui);
+            ReRender(player, gui);
         }
     }
 
