@@ -5,13 +5,23 @@ import net.kyori.adventure.text.Component;
 
 import java.util.function.Consumer;
 
-public class GUIComponentButton extends GUIComponent {
+/**
+ * A basic GUI component that runs a action when clicked.
+ */
+public final class GUIComponentButton extends GUIComponent {
 
     Component name;
     String icon;
     Component[] description;
     Consumer<SaplingPlayer> onClick;
 
+    /**
+     * Create a Basic Button Component
+     * @param icon The icon of the button
+     * @param name The name of the button
+     * @param description The description of the button
+     * @param onClick The action to be run when the button is clicked.
+     */
     public GUIComponentButton(String icon, Component name, Component[] description, Consumer<SaplingPlayer> onClick) {
         this.icon = icon;
         this.name = name;

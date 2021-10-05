@@ -52,15 +52,6 @@ public class MySQL extends Database {
      * @param legacyDriver | Whether or not using a legacy driver, used to fix "Failed to get driver instance"
      */
     public MySQL(String url, String username, String password, boolean legacyDriver) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(url);
         config.setUsername(username);

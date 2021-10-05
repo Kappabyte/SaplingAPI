@@ -5,12 +5,21 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-public class GUIComponentText extends GUIComponent {
+/**
+ * A basic GUI component that displays text on an item.
+ */
+public final class GUIComponentText extends GUIComponent {
 
     String icon;
     String title;
     String[] description;
 
+    /**
+     * Create the text component.
+     * @param icon The icon to use for the item.
+     * @param title THe title of the item.
+     * @param description The description of the item.
+     */
     public GUIComponentText(String icon, String title, String... description) {
         this.icon = icon;
         this.title = title;
