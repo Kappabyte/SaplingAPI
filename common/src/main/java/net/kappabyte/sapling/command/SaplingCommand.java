@@ -1,4 +1,11 @@
 package net.kappabyte.sapling.command;
 
-public class SaplingCommand {
+public abstract class SaplingCommand {
+
+    public abstract void register();
+
+    protected final void addSyntax(Argument... args) {
+
+    }
+
 }
